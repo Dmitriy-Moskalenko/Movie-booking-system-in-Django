@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from film_app.models import *
+
+admin.site.register(Film)
+admin.site.register(People)
+admin.site.register(Category)

@@ -9,8 +9,8 @@ def photo_resolution_validator(photo):
     Минимальное разрешение постера - 1440х480
     """
     width, height = get_image_dimensions(photo)
-    max_width, min_width = 2560, 854
-    max_height, min_height = 1440, 480
+    max_width, min_width = 2000, 1000
+    max_height, min_height = 2800, 1500
 
     if width > max_width or height > max_height:
         raise ValidationError(f'Максимальное разрешение изображения {max_width}x{max_height}')
@@ -23,9 +23,7 @@ def year_of_film_release_validator(year):
     """Проверка года выпуска фильма
     Год фильма не должен превышать текущий год
     """
-    if year <= date.year:
-        return year
-    else:
+    if year > date.today().year:
         raise ValidationError(f'Год фильма больше текущего года')
 
 
@@ -35,8 +33,8 @@ def photo_actor_resolution_validator(photo):
     Минимальное разрешение постера - 750х1000
     """
     width, height = get_image_dimensions(photo)
-    max_width, min_width = 1000, 1250
-    max_height, min_height = 750, 1000
+    max_width, min_width = 1000, 750
+    max_height, min_height = 1250, 1000
 
     if width > max_width or height > max_height:
         raise ValidationError(f'Максимальное разрешение фотографии {max_width}x{max_height}')
