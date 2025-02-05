@@ -2,6 +2,7 @@ from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
 
 from profile_manager.forms import RegistrationForm, LoginForm
+from profile_manager.models import Ticket
 
 
 def registration(request):
@@ -33,4 +34,10 @@ def logout_(request):
     """Выход из аккаунта"""
     logout(request)
     return redirect('/')
+
+
+def my_tickets(request):
+    """Странца с моими билетами"""
+    my_tickets_ = Ticket.objects.filter(user=request.user)
+    return render(request, 'my_tickets.html', {'my_tickets': my_tickets_})
 
