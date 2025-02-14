@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'film_app',
     'profile_manager',
+    'reservation',
 ]
 
 MIDDLEWARE = [
@@ -111,9 +112,6 @@ STATICFILES_DIRS = []
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-
-# QR_ROOT = os.path.join(BASE_DIR, 'qrcodes')
-# QR_URL = '/qrcodes/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

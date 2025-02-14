@@ -10,7 +10,7 @@ def qrcode_create(data):
     qr = qrcode.make(data)
     buffer = io.BytesIO()
 
-    qr.save(buffer, format='PNG')  # Сохранение кода
+    qr.save(buffer, format='PNG')
     qr_image = buffer.getvalue()
     return ContentFile(qr_image, name='ticket.png')
 

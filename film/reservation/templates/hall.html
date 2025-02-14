@@ -1,0 +1,44 @@
+{% load custom_filters %}
+
+<div class="hall-container">
+    <div style="display: flex; flex-direction: column;">
+        {% for i in rows %}
+            <div style="display: flex; align-items: center;">
+                {{ i }}
+                {% for j in seats %}
+                    {% place_occupied free_space i j as check %}
+                    {% if check %}
+                        <button onclick="Message()" type="button"
+                        style="width: 30px; height: 30px; background-color: red; margin: 5px;">
+                            {{ j }}
+                        </button>
+                    {% else %}
+                        <button onclick="Reservation(event, '{{ i }}', '{{ j }}')" type="button"
+                        style="width: 30px; height: 30px; background-color: lightgreen; margin: 5px;">
+                            {{ j }}
+                        </button>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Забронировать</button>
+    </form>
+</div>
+
+<script>
+    function Reservation(event, row, seat) {
+        event.preventDefault();
+        document.getElementById('row_id').value = row;
+        document.getElementById('seat_id').value = seat;
+    }
+
+    function Message() {
+        alert('Вы не можете забронировать это место');
+    }
+</script>
+

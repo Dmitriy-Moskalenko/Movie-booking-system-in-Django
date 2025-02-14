@@ -9,6 +9,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('film_app.urls')),
     path('', include('profile_manager.urls')),
+    path('', include('reservation.urls')),
 ]
 
 if settings.DEBUG:

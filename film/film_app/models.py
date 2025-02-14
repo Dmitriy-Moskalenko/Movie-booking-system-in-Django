@@ -2,20 +2,19 @@ from django.db import models
 
 from film_app.validators import *
 
-
 status_people = (
-            ('Режиссёр', 'Режиссёр'),
-            ('Актёр', 'Актёр'),
-            ('Продюсер', 'Продюсер'),
-            ('Режиссер дубляжа', 'Режиссер дубляжа'),
-            ('Переводчик', 'Переводчик'),
-            ('Актер дубляжа', 'Актер дубляжа'),
-            ('Сценарист', 'Сценарист'),
-            ('Оператор', 'Оператор'),
-            ('Композитор', 'Композитор'),
-            ('Художник', 'Художник'),
-            ('Монтажер', 'Монтажер'),
-    )
+    ('Режиссёр', 'Режиссёр'),
+    ('Актёр', 'Актёр'),
+    ('Продюсер', 'Продюсер'),
+    ('Режиссер дубляжа', 'Режиссер дубляжа'),
+    ('Переводчик', 'Переводчик'),
+    ('Актер дубляжа', 'Актер дубляжа'),
+    ('Сценарист', 'Сценарист'),
+    ('Оператор', 'Оператор'),
+    ('Композитор', 'Композитор'),
+    ('Художник', 'Художник'),
+    ('Монтажер', 'Монтажер'),
+)
 
 
 class Film(models.Model):
@@ -46,3 +45,27 @@ class Category(models.Model):
     """Таблица с категориями"""
     title = models.CharField(max_length=50, blank=False, verbose_name='Категория')
     slug = models.SlugField(unique=True, blank=False, db_index=True, verbose_name='URL')
+
+
+class Sessions(models.Model):
+    """Таблица с сеансами"""
+    film = models.ForeignKey('Film', on_delete=models.CASCADE, verbose_name='Фильм')
+    time = models.TimeField(blank=False, verbose_name='Время сеанса')
+    date = models.DateField(blank=False, verbose_name='Дата сеанса')
+    price = models.IntegerField(blank=False, verbose_name='Цена')
+
+    def clean(self):
+        # Получаем все сеансы с таким же временем на ту же дату и для того же фильма
+        sessions = Sessions.objects.filter(
+            time=self.time,
+            date=self.date,
+            film=self.film
+        ).exclude(id=self.pk)  # Исключаем текущий объект из фильтрации, если это редактирование
+
+        if sessions.exists():
+            raise ValidationError('Время уже занято')
+
+
+
+
+
