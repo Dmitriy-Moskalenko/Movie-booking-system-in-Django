@@ -29,7 +29,8 @@ def hall(request, hall_id, session_id):
         'hall': hall_model,
         'rows': range(1, hall_model.rows + 1),
         'seats': range(1, hall_model.seats + 1),
-        'free_space': free_space(Ticket, hall_model),
+        'free_space': free_space(Ticket, hall_model, session=session_model),
         'form': form,
+        'session_model': session_model,
     }
     return render(request, 'hall.html', context=context)

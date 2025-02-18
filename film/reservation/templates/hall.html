@@ -23,11 +23,17 @@
         {% endfor %}
     </div>
 
+
     <form method="post">
         {% csrf_token %}
         {{ form }}
         <button type="submit">Забронировать</button>
     </form>
+    <p>{{ session_model.film.title }}</p>
+    <p>{{ session_model.date }}</p>
+    <p>{{ session_model.time }}</p>
+    <p>{{ session_model.price }}</p>
+    <p>{{ session_model.hall.pk }}</p>
 </div>
 
 <script>
