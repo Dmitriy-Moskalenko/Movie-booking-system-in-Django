@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 from film_app.validators import *
@@ -28,6 +29,11 @@ class Film(models.Model):
     description = models.TextField(blank=False, verbose_name='Описание')
     year = models.IntegerField(blank=False, validators=[year_of_film_release_validator], verbose_name='Год выпуска')
     actor = models.ForeignKey('People', on_delete=models.CASCADE, verbose_name='Актёры')
+    grade = models.IntegerField(blank=True, default=1, verbose_name='Оценка',
+                                validators=[
+                                    MinValueValidator(1),
+                                    MaxValueValidator(5),
+                                ])
 
 
 class People(models.Model):
@@ -46,6 +52,9 @@ class Category(models.Model):
     title = models.CharField(max_length=50, blank=False, verbose_name='Категория')
     slug = models.SlugField(unique=True, blank=False, db_index=True, verbose_name='URL')
 
+    def __str__(self):
+        return self.title
+
 
 class Sessions(models.Model):
     """Таблица с сеансами"""
@@ -55,12 +64,13 @@ class Sessions(models.Model):
     price = models.IntegerField(blank=False, verbose_name='Цена')
 
     def clean(self):
-        # Получаем все сеансы с таким же временем на ту же дату и для того же фильма
         sessions = Sessions.objects.filter(
             time=self.time,
             date=self.date,
-            film=self.film
-        ).exclude(id=self.pk)  # Исключаем текущий объект из фильтрации, если это редактирование
+        )
+
+        if self.pk:  # Проверяем, существует ли primary key (то есть, это редактирование)
+            sessions = sessions.exclude(id=self.pk)
 
         if sessions.exists():
             raise ValidationError('Время уже занято')

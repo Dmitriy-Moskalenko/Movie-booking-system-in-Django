@@ -2,7 +2,6 @@
 
 <link rel="stylesheet" href="{% static 'css/base.css' %}">
 <link rel="stylesheet" href="{% static 'css/responsive/base_responsive.css' %}">
-
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <div class="navbar-container">
@@ -15,9 +14,6 @@
                 <img src="{% static 'images/search.png' %}">
             </button>
             <div class="search-form-container" id="myPopup">
-                <button class='close-search' onclick="closePopup()">
-                    <img src="{% static 'images/close.png' %}">
-                </button>
                 <form method="get" autocomplete="off" action="{% url 'search' %}">
                     {% csrf_token %}
                     {{ form_search }}
@@ -25,7 +21,6 @@
                         <img src="{% static 'images/search.png' %}">
                     </button>
                 </form>
-
             </div>
         </div>
     </div>
@@ -35,35 +30,39 @@
             <img src="{% static 'images/profile.png' %}">
         </a>
          <div class="search-container-x">
-                <form method="get" autocomplete="off" action="{% url 'search' %}">
-                    {% csrf_token %}
-                    {{ form_search }}
-                    <button class='search-button' type="submit">
-                        <img src="{% static 'images/search.png' %}">
-                    </button>
-                </form>
+            <form method="get" autocomplete="off" action="{% url 'search' %}">
+                {% csrf_token %}
+                {{ form_search }}
+                <button class='search-button' type="submit">
+                    <img src="{% static 'images/search.png' %}">
+                </button>
+            </form>
         </div>
     </div>
+</div>
 
+<div class="body">
+    {% block content %}
+{% endblock %}
 </div>
 
 
-<body>
-    {% block content %}
-    {% endblock %}
-</body>
+
+
+
+
 
 
 <script>
+    let is_open = false
     function openPopup() {
-      var popup = document.getElementById('myPopup');
-      popup.classList.add('show');
-    }
-
-    function closePopup() {
         var popup = document.getElementById('myPopup');
-        popup.classList.remove('show'); // Скрываем всплывающее окно
-
+      if (is_open == false) {
+         popup.classList.add('show');
+         is_open = true;
+      } else {
+         popup.classList.remove('show');
+         is_open = false;
+      }
     }
-
 </script>

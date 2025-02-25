@@ -1,6 +1,4 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap');
-
 
 body {
     margin: auto;
@@ -10,6 +8,10 @@ body {
     font-family: "Onest", serif;
     font-weight: 300;
     font-style: normal;
+}
+
+.body {
+    display: flex;
 }
 
 .navbar-x, .navbar-y,
@@ -37,16 +39,10 @@ body {
     display: block;
 }
 
-.close-search {
-    background-color: transparent;
-    border: none;
-    position: absolute;
-    cursor: pointer;
-}
-
 .search-button {
     position: absolute;
     background-color: transparent;
     border: none;
     cursor: pointer;
 }
+

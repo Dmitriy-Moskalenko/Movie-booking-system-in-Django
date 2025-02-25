@@ -1,0 +1,38 @@
+.film {
+    background-color: #ffffff;
+}
+
+.title {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.title:hover {
+    text-decoration: underline;
+}
+
+.description {
+    overflow: hidden;
+}
+
+.star {
+    color: orange;
+}
+
+.filters-container {
+    background-color: #ffffff;
+}
+
+.rating {
+    font-weight: bold;
+}
+
+.button-rating {
+    background-color: #ffffff;
+}
+
+.button-rating:hover {
+    transition: 0.3s;
+    border: 2px solid #eeeeee;
+}
+

@@ -22,3 +22,4 @@ class FilmAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Film, FilmAdmin)
+admin.site.register(Sessions)

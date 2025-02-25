@@ -1,9 +1,80 @@
 {% extends 'base/base.html' %}
+{% load static %}
 
 {% block title %}Главная страница{% endblock %}
 
 {% block content %}
+
+<link rel="stylesheet" href="{% static 'css/main_page.css' %}">
+<link rel="stylesheet" href="{% static 'css/responsive/main_page_responsive.css' %}">
+
+<div class="films-container">
+    {% for film in all_film %}
+        <div class="film">
+            {% if film.photo %}
+                <img class='photo' src="{{ film.photo.url }}">
+            {% endif %}
+            <div class="info">
+                <a href='/' class="title">{{ film.title }}</a>
+                <p class="description">{{ film.description|truncatechars:300  }}</p>
+                <div class="grade">
+                    {% for star in "12345"|make_list %}
+                        {% if star|add:0 <= film.grade %}
+                            <span class="star">★</span>
+                        {% else %}
+                            <span class="star">☆</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <hr>
+                <span>{{ film.year }}</span> <span>{{ film.cat.title }}</span>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+<div class="filters-container">
+    <form method="get" id="CatSelect" oninput="updatePage('CatSelect')">
+        {% csrf_token %}
+        {{ category_form }}
+        <input type="hidden" name="cat_select_id" value="CatSelect">
+    </form>
+
+    <form  method="GET" id="AscDesc" oninput="updatePage('AscDesc')">
+        <select class='year_sorted' name="sort" required>
+            <option value="" disabled selected>Год
+            <option value="asc">По возрастанию года</option>
+            <option value="desc">По убыванию года</option>
+        </select>
+        <input type="hidden" name="asc_desc_id" value="AscDesc">
+    </form>
+
+    <form class='rating' method="get" id="Grade">
+        <p class="rating-title">По рейтингу</p>
+        {% csrf_token %}
+        <span class='range-value' id="rangeValue"></span>
+        {{ grade_form }}
+        <button class='button-rating' type="submit">Применить</button>
+        <input type="hidden" name="grade_id" value="Grade">
+    </form>
+</div>
+<script>
+    const rangeInput = document.getElementById('rangeInput');
+    const rangeValue = document.getElementById('rangeValue');
+
+    rangeInput.value = localStorage.getItem('rangeValue') || 50;
+    rangeValue.textContent = rangeInput.value;
+
+    rangeInput.oninput = () => {
+        rangeValue.textContent = rangeInput.value;
+        localStorage.setItem('rangeValue', rangeInput.value);
+    };
+
+    function updatePage(id) {
+        document.getElementById(id).submit();
+    }
+</script>
 {% endblock %}
+
 
 
 
