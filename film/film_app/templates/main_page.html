@@ -15,7 +15,7 @@
                 <img class='photo' src="{{ film.photo.url }}">
             {% endif %}
             <div class="info">
-                <a href='/' class="title">{{ film.title }}</a>
+                <a href="{% url 'show_film' film.slug %}" class="title">{{ film.title }}</a>
                 <p class="description">{{ film.description|truncatechars:300  }}</p>
                 <div class="grade">
                     {% for star in "12345"|make_list %}

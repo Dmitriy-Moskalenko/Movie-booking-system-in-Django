@@ -25,10 +25,10 @@ class Film(models.Model):
     cat = models.ForeignKey('Category', blank=False, on_delete=models.CASCADE, verbose_name='Категория')
     photo = models.ImageField(upload_to='film_photo/%Y/%m/%d/', blank=False,
                               validators=[photo_resolution_validator], verbose_name='Постер')
+
     video = models.FileField(upload_to='film_video/%Y/%m/%d/', blank=True, verbose_name='Трейлер')
     description = models.TextField(blank=False, verbose_name='Описание')
     year = models.IntegerField(blank=False, validators=[year_of_film_release_validator], verbose_name='Год выпуска')
-    actor = models.ForeignKey('People', on_delete=models.CASCADE, verbose_name='Актёры')
     grade = models.IntegerField(blank=True, default=1, verbose_name='Оценка',
                                 validators=[
                                     MinValueValidator(1),
@@ -36,8 +36,16 @@ class Film(models.Model):
                                 ])
 
 
+class PhotosFilm(models.Model):
+    """Таблица с фотографиями для фильма"""
+    film = models.ForeignKey(Film, on_delete=models.CASCADE, verbose_name='Фильм')
+    photo = models.ImageField(upload_to='film_photos/%Y/%m/%d/', blank=False,
+                              validators=[photo_for_film_validator], verbose_name='Фото')
+
+
 class People(models.Model):
     """Таблица с людьми"""
+    film = models.ForeignKey(Film, on_delete=models.CASCADE, verbose_name='Фильм')
     status = models.CharField(choices=status_people, blank=False, max_length=50, verbose_name='Статус')
     name = models.CharField(max_length=50, db_index=True, blank=False, verbose_name='Имя')
     surname = models.CharField(max_length=50, db_index=True, blank=False, verbose_name='Фамилия')
@@ -54,6 +62,13 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Hall(models.Model):
+    """Таблица с залами"""
+    film = models.ForeignKey('Film', on_delete=models.CASCADE, verbose_name='Фильм')
+    seats = models.IntegerField(blank=False, verbose_name='Количество посадочных мест в одном ряду')
+    rows = models.IntegerField(blank=False, verbose_name='Количество рядов')
 
 
 class Sessions(models.Model):

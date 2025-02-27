@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from film_app.models import Sessions
 from profile_manager.forms import TicketForm
 from profile_manager.models import Ticket
-from reservation.models import Hall
+from film_app.models import Hall
 from reservation.service import free_space
 
 
@@ -25,12 +25,11 @@ def hall(request, hall_id, session_id):
     else:
         form = TicketForm(request.POST)
 
-    context = {
+    return render(request, 'hall.html', {
         'hall': hall_model,
         'rows': range(1, hall_model.rows + 1),
         'seats': range(1, hall_model.seats + 1),
         'free_space': free_space(Ticket, hall_model, session=session_model),
         'form': form,
         'session_model': session_model,
-    }
-    return render(request, 'hall.html', context=context)
+    })

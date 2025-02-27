@@ -1,5 +1,5 @@
 from django.contrib import admin
 
-from reservation.models import Hall
+from film_app.models import Hall
 
 admin.site.register(Hall)

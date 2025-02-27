@@ -3,7 +3,7 @@ from django.db import models
 
 from film_app.models import Film, Sessions
 from profile_manager.service import qrcode_create
-from reservation.models import Hall
+from film_app.models import Hall
 
 
 class Ticket(models.Model):

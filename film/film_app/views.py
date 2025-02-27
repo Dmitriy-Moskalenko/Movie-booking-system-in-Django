@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from film_app.forms import SearchForm, SortedByCatForm, SortedByRatingForm
-from film_app.models import Film, Category
+from film_app.models import Film, Category, Sessions, People, PhotosFilm
 from film_app.service import filters
+from film_app.models import Hall
 
 
 def main_page(request):
@@ -30,3 +31,25 @@ def search(request):
         form = SearchForm(request.GET)
     return render(request, 'search.html', {'form_search': form})
 
+
+def show_film(request, film_slug):
+    """Страница с фильмом"""
+    film = get_object_or_404(Film, slug=film_slug)
+    peoples = People.objects.filter(film__slug=film_slug)
+    photos_film = PhotosFilm.objects.filter(film__slug=film_slug)
+
+    return render(request, 'show_film.html', {
+        'film': film,
+        'peoples': peoples,
+        'photos': photos_film,
+    })
+
+
+def sessions_for_the_film(request, film_slug):
+    """Страница с выбором сеанса и зала"""
+    sessions = Sessions.objects.filter(film__slug=film_slug)
+    halls = Hall.objects.filter(film__slug=film_slug)
+    return render(request, 'sessions_for_the_film.html', {
+        'sessions': sessions,
+        'halls': halls,
+    })
